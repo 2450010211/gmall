@@ -1,8 +1,10 @@
 package com.lhf.gmall.user.controller;
 
+import com.lhf.gmall.user.bean.UserAddress;
 import com.lhf.gmall.user.bean.UserInfo;
 import com.lhf.gmall.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,9 +21,18 @@ public class UserController {
     UserService userService;
 
     @RequestMapping(value = "/user")
-    public List<UserInfo> getUser(){
+//    public List<UserInfo> getUser(){
+//        List<UserInfo> users = userService.getUsers();
+//        return users;
+//    }
+    public ResponseEntity<List<UserInfo>> getUser(){
         List<UserInfo> users = userService.getUsers();
-        return users;
+        return ResponseEntity.ok(users);
     }
 
+    @RequestMapping(value = "/address")
+    public ResponseEntity<List<UserAddress>> getAddress(){
+        List<UserAddress> userAddress = userService.getUserAddress();
+        return ResponseEntity.ok(userAddress);
+    }
 }
