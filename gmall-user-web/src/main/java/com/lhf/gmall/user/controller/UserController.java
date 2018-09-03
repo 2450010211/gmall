@@ -1,23 +1,19 @@
 package com.lhf.gmall.user.controller;
 
-import com.lhf.gmall.user.bean.UserAddress;
-import com.lhf.gmall.user.bean.UserInfo;
-import com.lhf.gmall.user.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import com.lhf.gmall.bean.UserAddress;
+import com.lhf.gmall.bean.UserInfo;
+import com.lhf.gmall.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.alibaba.dubbo.config.annotation.Reference;
 import java.util.List;
 
-/**
- * @author shkstart
- * @create 2018-09-03 0:42
- */
 @RestController
 public class UserController {
 
-    @Autowired
+    @Reference
     UserService userService;
 
     @RequestMapping(value = "/user")

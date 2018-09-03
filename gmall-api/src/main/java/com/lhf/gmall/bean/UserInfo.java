@@ -1,5 +1,7 @@
-package com.lhf.gmall.user.bean;
+package com.lhf.gmall.bean;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
@@ -7,14 +9,25 @@ import java.io.Serializable;
  * @create 2018-09-03 0:44
  */
 public class UserInfo implements Serializable{
+
+    @Id
+    @Column
     private String id;
+    @Column
     private String loginName;
+    @Column
     private String nickName;
+    @Column
     private String passwd;
+    @Column
     private String name;
+    @Column
     private String phoneNum;
+    @Column
     private String email;
+    @Column
     private String headImg;
+    @Column
     private String userLevel;
 
     public UserInfo() {

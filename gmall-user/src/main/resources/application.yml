@@ -1,7 +1,25 @@
 server:
-  port: 8080
+  port: 8070
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/gmall
     username: root
     password: lhf
+    #zookeeper的配置
+  dubbo:
+    registry:
+      address: 192.168.234.128:2181
+      protocol: zookeeper
+    ## dubbo的协议和扫描
+    protocol:
+      name: dubbo
+    base-package: com.lhf.gmall
+    application:
+      name: gmall-user
+logging:
+  level:
+    root: debug
+
+
+
+

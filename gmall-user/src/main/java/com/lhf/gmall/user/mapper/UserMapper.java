@@ -1,6 +1,6 @@
 package com.lhf.gmall.user.mapper;
 
-import com.lhf.gmall.user.bean.UserInfo;
+import com.lhf.gmall.bean.UserInfo;
 import tk.mybatis.mapper.common.Mapper;
 
 /**

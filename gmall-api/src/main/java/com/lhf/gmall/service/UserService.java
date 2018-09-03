@@ -1,7 +1,7 @@
-package com.lhf.gmall.user.service;
+package com.lhf.gmall.service;
 
-import com.lhf.gmall.user.bean.UserAddress;
-import com.lhf.gmall.user.bean.UserInfo;
+import com.lhf.gmall.bean.UserAddress;
+import com.lhf.gmall.bean.UserInfo;
 
 import java.util.List;
 

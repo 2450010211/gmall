@@ -1,0 +1,17 @@
+server:
+  port: 8080
+spring:
+  dubbo:
+    registry:
+      address: 192.168.234.128:2181
+      protocol: zookeeper
+    protocol: dubbo
+    application:
+      name: gmall-user-web
+    consumer:
+      timeout: 300000 #超时时间
+      check: false #检查服务端是否正常
+logging:
+  level:
+    root: debug
+

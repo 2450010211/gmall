@@ -1,15 +1,27 @@
-package com.lhf.gmall.user.bean;
+package com.lhf.gmall.bean;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.io.Serializable;
 
 /**
  * @author shkstart
  * @create 2018-09-03 1:24
  */
-public class UserAddress {
+public class UserAddress implements Serializable{
+
+    @Id
+    @Column
     private String id;
+    @Column
     private String userAddress;
+    @Column
     private Integer userId;
+    @Column
     private String consignee;
+    @Column
     private String phoneNum;
+    @Column
     private String isDefault;
 
     public UserAddress() {
