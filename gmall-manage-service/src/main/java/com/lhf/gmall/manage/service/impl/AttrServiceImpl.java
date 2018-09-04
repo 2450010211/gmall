@@ -20,7 +20,9 @@ public class AttrServiceImpl implements AttrService{
 
     @Override
     public List<BaseAttrInfo> getAttrListByCtg3(String catalog3Id) {
-
-        return null;
+        BaseAttrInfo baseAttrInfo = new BaseAttrInfo();
+        baseAttrInfo.setCatalog3Id(catalog3Id);
+        List<BaseAttrInfo> select = baseAttrInfoMapper.select(baseAttrInfo);
+        return select;
     }
 }
