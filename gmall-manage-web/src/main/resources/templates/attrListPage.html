@@ -16,11 +16,10 @@
         </table>
         <!-- 选择器定义带图标的工具栏 添加data-options="toolbar:'#tb'-->
         <div id="tb">
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a>
+            <a href="javascript:addAttrInfo()" class="easyui-linkbutton"  data-options="iconCls:'icon-add',plain:true">添加</a>
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">编辑</a>
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</a>
-
-           <div>
+            <br/>
                <!-- 下拉框 -->
                一级分类:<select id="ctg1ForAttrList" data-options=" url:'getCatalog1',valueField:'id',textField:'name',
                     onSelect: function(rec){
@@ -37,16 +36,135 @@
                 class="easyui-combobox" style="width:100px;"></select>
                三级分类:<select id="ctg3ForAttrList" data-options="valueField:'id',textField:'name'", class="easyui-combobox" style="width:100px;"></select>
                <a  href="javaScript:reloadAttrList();" class="easyui-linkbutton" data-options="iconCls:'icon-search'">刷新属性列表</a>
-           </div>
         </div>
+        <!-- 对话框 -->
+            <div id="dlg" class="easyui-dialog" title="编辑属性" style="width:600px;height:500px;"
+                 closed="true"  data-options="iconCls:'icon-save',resizable:true,modal:true" buttons="#bb" >
+                <form id="attrForm">
+                    <br/>
+                    <label>属性名称:</label>
+                    <input  id="attrName" name="attrName" class="easyui-textbox" data-options="" style="width:100px"/>
+                    <input  id="attrId" name="attrId" type="hidden"  />
+                    <br/><br/>
+                    <table id="dg_av" class="easyui-datagrid" title="属性值列表"></table>
+                </form>
+            </div>
+
+            <div id="bb">
+                <a href="javascript:saveAttr()" class="easyui-linkbutton">保存</a>
+                <a href="javascript:closeAttr()" class="easyui-linkbutton">关闭</a>
+            </div>
         <script language="JavaScript">
+            //把数据保存到数据库中
+            function saveAttr(){
+                //获取数据
+                //ajax传输的数据格式的默认类型是：请求字符串格式 name=zxc&age=20
+                //1.三级分类必须要选中
+                var  baseAttrInfo = {};//我们要把数据封装成json数据然后进行传输
+                var catalog3Id = $("#ctg3ForAttrList").combobox("getValue");
+               if(catalog3Id){
+
+                   //数据的保存格式 baseAttrInfo = {catalog3Id:catalog3Id};
+                   baseAttrInfo["catalog3Id"] = catalog3Id; //61
+
+                   //获取属性名称  获取到的是对话框最上面的输入框里的值
+                   var attrName = $("#attrName").textbox("getValue");
+
+                   //数据的保存格式 baseAttrInfo = {catalog3Id:catalog3Id};
+                   baseAttrInfo["attrName"] = attrName;
+
+                   //获得dg_av中已经添加的属性值数据
+                   //getRows返回当前页的所有行
+                   var rows = $("#dg_av").datagrid("getRows");
+                   $(rows).each(function(i,json){
+                       //输入框里输入的内容
+                       var valueName = json.valueName;
+
+                       //{attrValueList[i].valueName: valueName}
+                       //BaseAttrInfo 里有List<BaseAttrValue> attrValueList; BaseAttrInfo对象的临时变量
+                       //把输入的数据保存到BaseAttrInfo中的list集合中
+                       baseAttrInfo["attrValueList["+i+"].valueName"] = valueName;
+                   });
+                   $.ajax({
+                       url: "saveAttr",
+                       type: "POST",
+                       data: baseAttrInfo,
+                       success: function(data){
+                           alert(data);
+                    }
+                   });
+                   $("#dlg").dialog("close");
+               }else{
+                   alert("请选择三级分类");
+               }
+            }
            function reloadAttrList(){
                //getValue
               var catalog3Id =  $("#ctg3ForAttrList").combobox("getValue");
               //alert(ctg3ForAttrId);
-               $('#dg').datagrid({
+               $("#dg").datagrid({
                    url: "getAttrListByCtg3?catalog3Id="+catalog3Id
                });
+           }
+
+           function addAttrInfo(){
+               var catalog3Id =  $("#ctg3ForAttrList").combobox("getValue");
+               if(catalog3Id){
+                //如果选中三级分类打开对话框
+                   $("#dlg").dialog("open");
+                   initAttrValueDatagrid();
+               }else{
+                   alert("请选择三级分类");
+               }
+           }
+           //初始化函数
+           function  initAttrValueDatagrid() {
+               datagrid = $('#dg_av').datagrid({
+                   toolbar: [{
+                       iconCls: 'icon-add',
+                       handler: function () {
+                           //添加编辑属性的数据表格
+                           $("#dg_av").datagrid("appendRow",{
+                               id:"",
+                               valueName:"默认属性值"
+                           });
+                       }
+                   }, '-', {
+                       iconCls: 'icon-remove',
+                       handler: function () {
+                           //1 获取被选中的行
+                           var selectRow = $("#dg_av").datagrid("getSelected");
+                           //2 获得行索引
+                           var rowIndex = $("#dg_av").datagrid("getRowIndex",selectRow);
+                           //3 根据行索引删除当前行
+                           $("#dg_av").datagrid("deleteRow",rowIndex);
+                       }
+                   }],
+                   columns:[[ //可编辑的输入框
+                       {field:'id',title:'属性值编号',width:100},
+                       {field:'valueName',title:'属性值名称',width:100,editor:{
+                            type: "validatebox", options: {
+                                //某个选项选中了，后面的文本框为必填，否则为不必填写
+                                   required: true
+                               }
+                           }}
+                   ]],
+                   onDblClickRow: function (rowIndex, rowData) {
+                       //双击开启编辑行
+                       //rowIndex：点击的行的索引值，该索引值从0开始。
+                       //rowData：对应于点击行的记录。
+                       datagrid.datagrid("beginEdit", rowIndex);
+                       //设定当失去焦点时,退出编辑状态
+                       var valueName = rowData.valueName;
+                       $("input.datagrid-editable-input").val(valueName).bind("blur",function(evt){
+                           datagrid.datagrid('endEdit',rowIndex);
+                       });
+                   }
+               });
+           }
+           function closeAttr(){
+               //关闭对话框close
+               $("#dlg").dialog("close");
            }
         </script>
 </body>
