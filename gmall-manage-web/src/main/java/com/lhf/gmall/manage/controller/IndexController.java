@@ -19,4 +19,9 @@ public class IndexController {
     public String attrListPage(){
         return "attrListPage";
     }
+
+    @RequestMapping(value = "/spuListPage")
+    public String spuListPage(){
+        return "spuListPage";
+    }
 }

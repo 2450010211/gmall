@@ -1,6 +1,7 @@
 package com.lhf.gmall.service;
 
 import com.lhf.gmall.bean.BaseAttrInfo;
+import com.lhf.gmall.exception.BaseAttrInfoException;
 
 import java.util.List;
 
@@ -19,5 +20,11 @@ public interface AttrService {
      * 修改并保存属性列表
      * @param baseAttrInfo
      */
-    void saveAttr(BaseAttrInfo baseAttrInfo);
+    void saveAttr(BaseAttrInfo baseAttrInfo) throws BaseAttrInfoException;
+
+    /**
+     * 编辑对话框回显销售属性
+     * @return
+     */
+    List<BaseAttrInfo> getBaseAttrInfo(String catalog3Id);
 }

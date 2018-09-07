@@ -3,6 +3,7 @@ package com.lhf.gmall.manage.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.lhf.gmall.bean.BaseAttrInfo;
 import com.lhf.gmall.bean.BaseAttrValue;
+import com.lhf.gmall.exception.BaseAttrInfoException;
 import com.lhf.gmall.manage.mapper.BaseAttrInfoMapper;
 import com.lhf.gmall.manage.mapper.BaseAttrValueMapper;
 import com.lhf.gmall.service.AttrService;
@@ -34,8 +35,8 @@ public class AttrServiceImpl implements AttrService{
 
     @Override
     public void saveAttr(BaseAttrInfo baseAttrInfo) {
-        String id = baseAttrInfo.getId();
-        if(StringUtils.isBlank(id)){//id不为空 保存
+        String attrName = baseAttrInfo.getAttrName();
+        if(!StringUtils.isEmpty(attrName)){//保存
             Example example = new Example(BaseAttrInfo.class);
             example.createCriteria()
                     .andEqualTo("catalog3Id", baseAttrInfo.getCatalog3Id())
@@ -58,17 +59,16 @@ public class AttrServiceImpl implements AttrService{
                 }
             }
         }else{//修改
-            baseAttrInfoMapper.updateByPrimaryKeySelective(baseAttrInfo);
-            Example example = new Example(BaseAttrValue.class);
-            example.createCriteria().andEqualTo("attrid",baseAttrInfo.getId());
-            baseAttrValueMapper.deleteByExample(example);
-
-            String attrid = baseAttrInfo.getId();
-            List<BaseAttrValue> attrValueList = baseAttrInfo.getAttrValueList();
-            for (BaseAttrValue baseAttrValue : attrValueList) {
-                baseAttrValue.setId(attrid);
-                baseAttrValueMapper.insert(baseAttrValue);
-            }
+            throw new BaseAttrInfoException("BaseAttrInfo属性名称不能为空");
         }
     }
+
+    @Override
+    public List<BaseAttrInfo> getBaseAttrInfo(String catalog3Id) {
+        BaseAttrInfo baseAttrInfo = new BaseAttrInfo();
+        baseAttrInfo.setCatalog3Id(catalog3Id);
+        List<BaseAttrInfo> select = baseAttrInfoMapper.select(baseAttrInfo);
+        return select;
+    }
+
 }

@@ -17,7 +17,7 @@
         <!-- 选择器定义带图标的工具栏 添加data-options="toolbar:'#tb'-->
         <div id="tb">
             <a href="javascript:addAttrInfo()" class="easyui-linkbutton"  data-options="iconCls:'icon-add',plain:true">添加</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">编辑</a>
+            <a href="javascript:editAttrInfo()" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">编辑</a>
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</a>
             <br/>
                <!-- 下拉框 -->
@@ -37,7 +37,7 @@
                三级分类:<select id="ctg3ForAttrList" data-options="valueField:'id',textField:'name'", class="easyui-combobox" style="width:100px;"></select>
                <a  href="javaScript:reloadAttrList();" class="easyui-linkbutton" data-options="iconCls:'icon-search'">刷新属性列表</a>
         </div>
-        <!-- 对话框 -->
+        <!-- 添加对话框 -->
             <div id="dlg" class="easyui-dialog" title="编辑属性" style="width:600px;height:500px;"
                  closed="true"  data-options="iconCls:'icon-save',resizable:true,modal:true" buttons="#bb" >
                 <form id="attrForm">
@@ -54,6 +54,24 @@
                 <a href="javascript:saveAttr()" class="easyui-linkbutton">保存</a>
                 <a href="javascript:closeAttr()" class="easyui-linkbutton">关闭</a>
             </div>
+
+        <!-- 编辑对话框 -->
+        <div id="edit_dl" class="easyui-dialog" title="编辑属性" style="width:600px;height:500px;"
+             closed="true"  data-options="iconCls:'icon-save',resizable:true,modal:true" buttons="#edit_bb" >
+            <form id="editForm">
+                <br/>
+                <label>属性名称:</label>
+                <input id="cc" name="dept" value="" >
+                <br/><br/>
+                <table id="edit_av" class="easyui-datagrid" title="属性值列表"></table>
+            </form>
+        </div>
+
+        <div id="edit_bb">
+            <a href="javascript:saveAttr()" class="easyui-linkbutton">保存</a>
+            <a href="javascript:closeAttr()" class="easyui-linkbutton">关闭</a>
+        </div>
+
         <script language="JavaScript">
             //把数据保存到数据库中
             function saveAttr(){
@@ -93,7 +111,11 @@
                            alert(data);
                     }
                    });
+                   $(".datagrid-btable").empty();
                    $("#dlg").dialog("close");
+                   //清除对话框里的属性名称
+                   $("#attrForm").form("clear");
+                   reloadAttrList();
                }else{
                    alert("请选择三级分类");
                }
@@ -165,6 +187,19 @@
            function closeAttr(){
                //关闭对话框close
                $("#dlg").dialog("close");
+           }
+           function editAttrInfo(){
+               var catalog3Id =  $("#ctg3ForAttrList").combobox("getValue");
+               if(catalog3Id){
+                   $("#edit_dl").dialog("open");
+                   $('#cc').combobox({
+                       url:'getBaseAttrInfo?catalog3Id='+catalog3Id,
+                       valueField:'id',
+                       textField:'attrName'
+                   });
+               }else{
+                   alert("请选择三级分类");
+               }
            }
         </script>
 </body>
