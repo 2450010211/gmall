@@ -1,8 +1,7 @@
 package com.lhf.gmall.manage.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.lhf.gmall.bean.BaseSaleAttr;
-import com.lhf.gmall.bean.SpuInfo;
+import com.lhf.gmall.bean.*;
 import com.lhf.gmall.manage.util.FileUploadFile;
 import com.lhf.gmall.service.SpuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,21 @@ public class SpuController {
     @Reference
     SpuService spuService;
 
+
+    @RequestMapping(value = "/spuImageList")
+    @ResponseBody
+    public List<SpuImage> spuImageList(@RequestParam(value = "spuId") String spuId){
+        List<SpuImage> spuImages = spuService.spuImageList(spuId);
+        return spuImages;
+    }
+
+    @RequestMapping(value = "/spuSaleAttrList")
+    @ResponseBody
+    public List<SpuSaleAttr> spuSaleAttrList(@RequestParam(value = "spuId") String spuId){
+        List<SpuSaleAttr> spuSaleAttrs = spuService.spuSaleAttrList(spuId);
+        return  spuSaleAttrs;
+    }
+
     @RequestMapping(value = "/baseSaleAttrList")
     @ResponseBody
     public List<BaseSaleAttr> baseSaleAttrList() {
@@ -35,10 +49,9 @@ public class SpuController {
     @RequestMapping(value = "/saveSpu")
     @ResponseBody
     public String saveSpu(SpuInfo spuInfo){
-        String id = spuService.saveSpu(spuInfo);
-        System.out.println(id);
-        return id;
-    }
+        spuService.saveSpu(spuInfo);
+        return "success";
+}
 
     @RequestMapping(value = "/fileUpload")
     @ResponseBody
@@ -46,4 +59,12 @@ public class SpuController {
         String imgUrl = FileUploadFile.uploadImage(file);
         return imgUrl;
     }
+
+    @RequestMapping(value = "/spuList")
+    @ResponseBody
+    public List<SpuInfo> spuList(@RequestParam(value = "catalog3Id") String catalog3Id){
+        List<SpuInfo> spuInfos = spuService.spuList(catalog3Id);
+        return spuInfos;
+    }
+
 }

@@ -48,10 +48,23 @@
     </div>
 </div>
 <div th:include="spuInfoPage"></div>
+<div th:include="skuInfoPage"></div>
+<div th:include="skuListPage"></div>
 
 <script language="JavaScript">
 
-    //打开对话框
+    function reloadSpuList(){
+       var catalog3Id =  $("#ctg3ForSpuList").combobox("getValue");
+       if(catalog3Id){
+           $("#spulist_dg").datagrid({
+               url: 'spuList?catalog3Id='+catalog3Id
+           });
+       }else{
+           alert("请选择三级分类");
+       }
+    }
+
+    //打开spu对话框
     function addSpuInfo() {
         var catalog3Id =  $("#ctg3ForSpuList").combobox("getValue");
         if(catalog3Id){
@@ -59,6 +72,28 @@
             initSpuInfoDlg();
         }else{
             alert("请选择三级分类");
+        }
+    }
+
+    //打开sku列表
+    function showSkuInfoList() {
+        var spu = $("#spulist_dg").datagrid("getSelected");
+        if(spu != undefined){
+            initSkuListDlg(spu);
+            $("#skulist_dlg").dialog("open");
+        }else{
+            alert("请选择spuInfo列表");
+        }
+    }
+    //打开增加sku
+    function addSkuInfo(){
+        var spu = $("#spulist_dg").datagrid("getSelected");
+        if(spu != undefined){
+            $("#sku_dlg").dialog("open");
+            //初始化库存单元详情页
+            initSkuInfoDlg();
+        }else{
+            alert("请选择spuInfo列表");
         }
     }
 </script>

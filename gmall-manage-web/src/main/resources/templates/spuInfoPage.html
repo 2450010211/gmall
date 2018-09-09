@@ -17,8 +17,7 @@
         <label>spu描述:</label>
         <input id="description" name="description" class="easyui-textbox" data-options="multiline:true"
                style="width:500px;height:100px"/>
-
-        <input id="spuId" name="spuId" type="hidden"/>
+        <input id="spuId" name="spuId" class="easyui-textbox" type="hidden"/>
         <br/><br/>
 
         <!----------------商品图片列表  ----------------------->
@@ -78,7 +77,6 @@
 
     function initSpuImgListDatagrid(spuInfo) {
         $('#spuImgDg').datagrid('loadData', {total: 0, rows: []});
-        console.log("初始化表格");
         spuImgDg = $("#spuImgDg").datagrid({
             idField: 'fileId',    //标识行的主键  可以利用getRowIndex进行查询
             columns: [[
@@ -109,7 +107,6 @@
                 {
                     field: 'imgState', title: '上传状态', width: '20%',           //如果存在路径表示上传成功
                     formatter: function (value, row, index) {
-                        console.log('row.imgUrl:' + row.imgUrl);
                         if (row.imgUrl != undefined && row.imgUrl != '') {
                             return '已上传';
                         } else {
@@ -152,7 +149,7 @@
             // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
             resize: false,
             //设定文件大小上限 2M
-            fileSingleSizeLimit: 2 * 1024 * 1024,
+            fileSingleSizeLimit: 5 * 1024 * 1024,
             //可接受的文件类型
             accept: {
                 title: 'Images',
@@ -185,7 +182,6 @@
                     row: {imgUrl: response._raw}
                 });
         });
-
         $('#spuImgUploadBtn').click(function () {
             if (spuImgUploader.getFiles().length <= 0) {
                 $.messager().alert('警告', '没有需要上传的文件', 'warning');
@@ -198,8 +194,6 @@
 
     function saveSpu() {
 
-        var spuSaleAttrValue = {};
-        var spuId;
         //封装spuinfo的对象
         var spuInfo = {};
         //获取spu名称
@@ -218,7 +212,7 @@
             var saleAttrId = saleAttrJson.id;
             var saleAttrName = saleAttrJson.saleAttrName;
             spuInfo["spuSaleAttrList[" + i + "].saleAttrId"] = saleAttrId;
-            spuInfo["spuSaleAttrList[" + i + "].saleAttrValueName"] = saleAttrName;
+            spuInfo["spuSaleAttrList[" + i + "].saleAttrName"] = saleAttrName;
 
             //获取销售属性值列表  返回是JSON数据
             var spuSaleAttrValueJson = saleAttrJson.spuSaleAttrValueJson;
@@ -226,24 +220,30 @@
             $(spuSaleAttrValueJsonRows).each(function (j, spuSaleAttrValueJsonRowsJson) {
                 spuInfo["spuSaleAttrList[" + i + "].spuSaleAttrValueList[" + j + "].saleAttrValueName"] = spuSaleAttrValueJsonRowsJson.saleAttrValueName;
                 spuInfo["spuSaleAttrList[" + i + "].spuSaleAttrValueList[" + j + "].saleAttrId"] = saleAttrId;
-                spuSaleAttrValue["spuSaleAttrList[" + i + "].spuSaleAttrValueList[" + j + "].saleAttrValueName"] = spuSaleAttrValueJsonRowsJson.saleAttrValueName;
-                spuSaleAttrValue["spuSaleAttrList[" + i + "].spuSaleAttrValueList[" + j + "].saleAttrId"] = saleAttrId;
             });
         });
-        // 异步提交后台保存
-        $.get("saveSpu", spuInfo, function (data) {
-            spuId = data.id;
-        });
-        //console.log(spuId);
-        // var spuInfoId = spuInfo["id"]
-        // alert(spuInfoId);
 
+        //封装图片信息
+        var saleImageRows = $("#spuImgDg").datagrid("getRows");
+        $(saleImageRows).each(function(i,saleImageJson){
+            //spuImageList
+            var imgName = saleImageJson.imgName;
+            var imgUrl = saleImageJson.imgUrl;
+            spuInfo["spuImageList[" + i + "].imgName"] = imgName;
+            spuInfo["spuImageList[" + i + "].imgUrl"] = imgUrl;
+        })
+        // 异步提交后台保存
+        $.post("saveSpu", spuInfo, function (data) {
+            alert(data);
+        });
         //关闭销售属性对话框
         $("#spu_dlg").dialog("close");
     }
 
-
     function initSpuSaleAttrListDatagrid(spuInfo) {
+        var spuSaleAttrValueDg=$("#spuSaleAttrDg").datagrid({url:""});
+        // 初始化销售属性值的行索引，否则销售属性值的行数据将相互覆盖
+        spuSaleAttrValueDg.datagrid('loadData', { total: 0, rows: [] });
         //初始化销售属性列表
         $("#spuSaleAttrDg").datagrid({
             columns: [[
@@ -258,7 +258,6 @@
     function closeSpu() {
         $("#spu_dlg").dialog("close");
     }
-
 
     //操作销售属性值对话框
     function addSpuSaleAttr() {

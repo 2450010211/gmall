@@ -113,13 +113,12 @@
                    });
                    $(".datagrid-btable").empty();
                    $("#dlg").dialog("close");
-                   //清除对话框里的属性名称
-                   $("#attrForm").form("clear");
                    reloadAttrList();
                }else{
                    alert("请选择三级分类");
                }
             }
+
            function reloadAttrList(){
                //getValue
               var catalog3Id =  $("#ctg3ForAttrList").combobox("getValue");
@@ -141,6 +140,8 @@
            }
            //初始化函数
            function  initAttrValueDatagrid() {
+               $("#dg_av").datagrid({url:""});
+               $('#dg_av').datagrid('loadData', { total: 0, rows: [] });
                datagrid = $('#dg_av').datagrid({
                    toolbar: [{
                        iconCls: 'icon-add',

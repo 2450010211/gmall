@@ -1,7 +1,9 @@
 package com.lhf.gmall.service;
 
 import com.lhf.gmall.bean.BaseSaleAttr;
+import com.lhf.gmall.bean.SpuImage;
 import com.lhf.gmall.bean.SpuInfo;
+import com.lhf.gmall.bean.SpuSaleAttr;
 
 import java.util.List;
 
@@ -20,5 +22,24 @@ public interface SpuService {
      * 保存销售属性
      * @param spuInfo
      */
-    String saveSpu(SpuInfo spuInfo);
+    void saveSpu(SpuInfo spuInfo);
+
+    /**
+     * 查询spuInfo
+     * @return
+     */
+    List<SpuInfo> spuList(String catalog3Id);
+
+    /**
+     * 查询销售属性
+     * @return
+     */
+    List<SpuSaleAttr> spuSaleAttrList(String spuId);
+
+    /**
+     * 加载图片信息
+     * @param spuId
+     * @return
+     */
+    List<SpuImage> spuImageList(String spuId);
 }

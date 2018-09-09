@@ -30,6 +30,19 @@ public class AttrServiceImpl implements AttrService{
         BaseAttrInfo baseAttrInfo = new BaseAttrInfo();
         baseAttrInfo.setCatalog3Id(catalog3Id);
         List<BaseAttrInfo> select = baseAttrInfoMapper.select(baseAttrInfo);
+
+        /**
+         * 填充baseAttrValue的数据
+         */
+        if(select != null && select.size() != 0){
+            for (BaseAttrInfo attrInfo : select) {
+                BaseAttrValue baseAttrValue = new BaseAttrValue();
+                String id = attrInfo.getId();
+                baseAttrValue.setAttrId(id);
+                List<BaseAttrValue> select1 = baseAttrValueMapper.select(baseAttrValue);
+                attrInfo.setAttrValueList(select1);
+            }
+        }
         return select;
     }
 
