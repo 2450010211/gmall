@@ -155,7 +155,7 @@
                 type: "GET",
                 success: function(data){
                     $(data).each(function(i,saleAttr){
-                        $("#spuSaleAttrGroup").append("<span saleAttId='" + saleAttr.id + "'>" + saleAttr.saleAttrName + "</span>");
+                        $("#spuSaleAttrGroup").append("<span saleAttId='" + saleAttr.saleAttrId + "'>" + saleAttr.saleAttrName + "</span>");
                         var attrSaleValue = saleAttr.spuSaleAttrValueList;
                         var saleSelect = "<select value=''>";
                         var saleOption = "";

@@ -5,7 +5,6 @@ import com.lhf.gmall.bean.*;
 import com.lhf.gmall.manage.mapper.*;
 import com.lhf.gmall.service.SpuService;
 import org.springframework.beans.factory.annotation.Autowired;
-import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
