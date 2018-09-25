@@ -27,4 +27,11 @@ public interface AttrService {
      * @return
      */
     List<BaseAttrInfo> getBaseAttrInfo(String catalog3Id);
+
+    /**
+     * 查询所有的平台属性值
+     * @param join
+     * @return
+     */
+    List<BaseAttrInfo> getAttrListByValueId(String join);
 }

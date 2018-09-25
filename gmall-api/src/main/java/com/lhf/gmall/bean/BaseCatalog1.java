@@ -1,16 +1,17 @@
 package com.lhf.gmall.bean;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @param
  * @return
  */
 public class BaseCatalog1 implements Serializable {
+
+
+
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)

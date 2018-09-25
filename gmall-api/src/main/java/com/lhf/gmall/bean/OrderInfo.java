@@ -61,6 +61,8 @@ public class OrderInfo implements Serializable {
     @Column
     private String trackingNo;
 
+    @Column
+    private String imgUrl;
 
     @Transient
     private List<OrderDetail> orderDetailList;
@@ -88,6 +90,14 @@ public class OrderInfo implements Serializable {
         OrderDetail orderDetail = orderDetailList.get(0);
         String tradeBody=orderDetail.getSkuName()+"等"+orderDetailList.size()+"件商品";
         return tradeBody;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
     public String getId() {

@@ -84,4 +84,10 @@ public class AttrServiceImpl implements AttrService{
         return select;
     }
 
+    @Override
+    public List<BaseAttrInfo> getAttrListByValueId(String join) {
+        List<BaseAttrInfo> baseAttrInfos = baseAttrInfoMapper.selectAttrListByValueId(join);
+        return baseAttrInfos;
+    }
+
 }

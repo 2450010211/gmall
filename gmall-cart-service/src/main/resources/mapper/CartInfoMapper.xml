@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lhf.gmall.cart.mapper.CartInfoMapper">
+    <delete id="deleteCartById">
+        <!--  ${} 在解析的时候，是把${}里的内容直接原样输出，然后做字符串的拼接操作,可以直接写在sql语句中  -->
+        <!-- 如果使用#{} 只会删除一条数据 -->
+        DELETE FROM cart_info WHERE id IN (${join})
+    </delete>
+</mapper>

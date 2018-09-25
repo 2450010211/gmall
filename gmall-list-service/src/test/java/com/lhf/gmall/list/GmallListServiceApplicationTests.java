@@ -80,6 +80,7 @@ public class GmallListServiceApplicationTests {
         return searchSourceBuilder.toString();
     }
 
+    @Test
     public void addData() {
         //查询skuInfo
         List<SkuInfo> skuInfoList = skuService.getSkuByCatalog3Id(61);

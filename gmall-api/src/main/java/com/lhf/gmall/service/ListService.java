@@ -16,4 +16,5 @@ public interface ListService {
      * @return
      */
     List<SkuLsInfo> search(SkuLsParam skuLsParam);
+
 }

@@ -20,4 +20,15 @@ public interface UserService {
      * userAddress
      */
     List<UserAddress> getUserAddress();
+
+    UserInfo login(UserInfo userInfo);
+
+    /**
+     * 查询用户地址
+     * @param userId
+     * @return
+     */
+    List<UserAddress> getUserAddresByUserId(String userId);
+
+    UserAddress getAddressListById(String addressId);
 }

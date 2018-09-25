@@ -16,9 +16,15 @@ spring:
     base-package: com.lhf.gmall
     application:
       name: gmall-user
+  redis:
+    host: 192.168.234.128
+    port: 6379
+    password: zxc123
+    database: 0
+
 logging:
   level:
-    root: debug
+    root: info
 
 
 

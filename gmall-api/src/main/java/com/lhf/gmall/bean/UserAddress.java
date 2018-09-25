@@ -16,7 +16,7 @@ public class UserAddress implements Serializable{
     @Column
     private String userAddress;
     @Column
-    private Integer userId;
+    private String userId;
     @Column
     private String consignee;
     @Column
@@ -27,7 +27,7 @@ public class UserAddress implements Serializable{
     public UserAddress() {
     }
 
-    public UserAddress(String id, String userAddress, Integer userId, String consignee, String phoneNum, String isDefault) {
+    public UserAddress(String id, String userAddress, String userId, String consignee, String phoneNum, String isDefault) {
         this.id = id;
         this.userAddress = userAddress;
         this.userId = userId;
@@ -52,11 +52,11 @@ public class UserAddress implements Serializable{
         this.userAddress = userAddress;
     }
 
-    public Integer getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

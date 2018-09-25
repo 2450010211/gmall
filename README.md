@@ -9,3 +9,12 @@ manage-service:8072
 
 list-web:8083
 list-service:8073
+
+cart-web:8084
+cart-service:8074
+
+passport-web:8085
+
+order-web:8086
+order-service:8076
+payment:8087
