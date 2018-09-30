@@ -92,11 +92,6 @@ public class WareConsumer {
             gwareService.lockStock(wareOrderTask);
         }
 
-
     }
-
-
-
-
 
 }
