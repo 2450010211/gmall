@@ -2,7 +2,6 @@ package com.lhf.gmall.payment.activemq;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQTextMessage;
-
 import javax.jms.*;
 
 /**
@@ -32,9 +31,7 @@ public class TopicProducer {
             //持久化
             producer.setDeliveryMode(DeliveryMode.PERSISTENT);
             textMessage.setText("为中华之崛起而读书");
-
             producer.send(textMessage);
-
         } catch (JMSException e) {
             e.printStackTrace();
         }finally {

@@ -86,6 +86,7 @@ public class PassportController {
     @ResponseBody
     public String verify(String token,String currentIp){
         //这个是web系统通过httpClien发送的请求,不是request请求
+
         //验证token的真伪
         try {
             Map<String, Object> tokenMap = JwtUtil.decode(token, "gmall0508", currentIp);

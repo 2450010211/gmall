@@ -87,9 +87,13 @@ public class OrderInfo implements Serializable {
 
 
     public String getTradeBody(){
-        OrderDetail orderDetail = orderDetailList.get(0);
-        String tradeBody=orderDetail.getSkuName()+"等"+orderDetailList.size()+"件商品";
-        return tradeBody;
+        if(null != orderDetailList){
+            OrderDetail orderDetail = orderDetailList.get(0);
+            String tradeBody=orderDetail.getSkuName()+"等"+orderDetailList.size()+"件商品";
+            return tradeBody;
+        }else{
+            return "";
+        }
     }
 
     public String getImgUrl() {

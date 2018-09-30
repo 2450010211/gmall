@@ -1,6 +1,7 @@
 package com.lhf.gmall.order.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSON;
 import com.lhf.gmall.annotation.LoginRequire;
 import com.lhf.gmall.bean.*;
 import com.lhf.gmall.bean.enums.PaymentWay;
@@ -12,6 +13,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -157,4 +161,27 @@ public class OrderController {
         }
         return totalPrice;
     }
+
+    /**
+     * 拆单
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "orderSplit",method = RequestMethod.POST)
+    @ResponseBody
+    public String orderSplit(HttpServletRequest request){
+        String orderId = request.getParameter("orderId");
+        String wareSkuMapJson = request.getParameter("wareSkuMap");
+        List<OrderInfo> subOrderInfoList = orderService.splitOrder(orderId,wareSkuMapJson);
+
+        List wareSkuMapList=new ArrayList();
+        for (OrderInfo orderInfo : subOrderInfoList) {
+            Map map = orderService.initWareOrder(orderInfo);
+            wareSkuMapList.add(map);
+        }
+        String newWareSkuMapJson = JSON.toJSONString(wareSkuMapList);
+        return newWareSkuMapJson;
+    }
+
+
 }

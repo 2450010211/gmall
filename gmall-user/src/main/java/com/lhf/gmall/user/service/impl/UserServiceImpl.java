@@ -1,6 +1,7 @@
 package com.lhf.gmall.user.service.impl;
 
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import com.lhf.gmall.bean.UserAddress;
 import com.lhf.gmall.bean.UserInfo;
@@ -9,7 +10,6 @@ import com.lhf.gmall.user.mapper.UserAddressMapper;
 import com.lhf.gmall.user.mapper.UserMapper;
 import com.lhf.gmall.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.alibaba.dubbo.config.annotation.Service;
 import redis.clients.jedis.Jedis;
 
 import java.util.List;

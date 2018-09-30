@@ -5,10 +5,8 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * @param
- * @return
+ *
  */
-
 public class SpuInfo implements Serializable {
 
     @Column

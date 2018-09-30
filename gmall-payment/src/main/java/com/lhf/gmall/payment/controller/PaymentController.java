@@ -39,6 +39,8 @@ public class PaymentController {
 
     /**
      * 支付完成回调的方法
+     * @param request
+     * @return
      */
     @RequestMapping(value = "/alipay/callback/return")
     public String alipayCallbackReturn(HttpServletRequest request) {
@@ -48,6 +50,7 @@ public class PaymentController {
          * &out_trade_no=atguigugmall201809231801271537696887684
          * &method=alipay.trade.page.pay.return
          * &total_amount=0.01
+         * sign签名
          * &sign=ePPrxpPXbocc41AcmDDVUyY%2B%2FzxNm4FG%2B1lHSWLxmO6Jyf3RrLEq2JExjeOfxQxxPNgJM%2BZjIVkmxZNEkp%2Bj%2FjIet2XZ6i2u0rgW6nosIVFQCRy8hZ%2FqYEFxDraapBmlKjGNbm9qhbD0m6b0%2F%2Bl3PURxk4yLvIdM2OQwbbjWykmwx1mrLZ7LXeeHItfvC1xSgm6AOfujjxEkCn9XLevUKSf%2BkyA%2BLZdT%2BrE72faJt4Znixro9gPz5%2FspUlLRBSqAXAiZrtNzEqlXa9xuZ79jkbNzC6%2FBWzG2F2ZbQtoA86olbuBT2cEgbk5jb2JRUJrLN8F7KRYI0ScveBgF6pQ%2Bhg%3D%3D
          * &trade_no=2018092322001465860598254367
          * &auth_app_id=2018020102122556
@@ -82,13 +85,15 @@ public class PaymentController {
         paymentInfo.setCallbackTime(new Date());
         paymentInfo.setCallbackContent(callback);
         paymentInfo.setOutTradeNo(outTradeNo);
-        paymentService.updatePayment(paymentInfo);
-        //调用订单系统,更新订单信息
+
+        paymentService.updatePaymentSuccess(paymentInfo);
         return "finish";
     }
 
     /**
      * 选择支付方式
+     * @param outTradeNo
+     * @return
      */
     @RequestMapping(value = "/alipay/submit")
     @ResponseBody
@@ -129,6 +134,8 @@ public class PaymentController {
 
         paymentService.savePayment(paymentInfo);
 
+        //通知延迟任务开始执行
+        paymentService.sendDelayPaymentResult(paymentInfo.getOutTradeNo(),5);
         return form;
     }
 
